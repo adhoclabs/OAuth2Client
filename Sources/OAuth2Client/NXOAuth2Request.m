@@ -37,6 +37,7 @@
 + (void)performMethod:(NSString *)aMethod
            onResource:(NSURL *)aResource
       usingParameters:(NSDictionary *)someParameters
+      withContentType:(NSString *)contentType
           withAccount:(NXOAuth2Account *)anAccount
   sendProgressHandler:(NXOAuth2ConnectionSendingProgressHandler)progressHandler
       responseHandler:(NXOAuth2ConnectionResponseHandler)responseHandler;
@@ -45,6 +46,7 @@
                                                                   method:aMethod
                                                               parameters:someParameters];
     request.account = anAccount;
+    request.contentType = contentType;
     [request performRequestWithSendingProgressHandler:progressHandler responseHandler:responseHandler];
 }
 
@@ -105,6 +107,9 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.resource];
     [request setHTTPMethod:self.requestMethod];
+    if (self.contentType) {
+        [request setValue:self.contentType forHTTPHeaderField:@"Content-Type"];
+    }
     self.connection = [[NXOAuth2Connection alloc] initWithRequest:request
                                                 requestParameters:self.parameters
                                                       oauthClient:self.account.oauthClient
