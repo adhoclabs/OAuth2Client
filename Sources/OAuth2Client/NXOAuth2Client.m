@@ -68,6 +68,7 @@ NSString * const NXOAuth2ClientConnectionContextTokenRefresh = @"tokenRefresh";
                          tokenURL:aTokenURL
                       accessToken:anAccessToken
                         tokenType:nil
+                 responseCodeType:nil
                     keyChainGroup:aKeyChainGroup
                        persistent:shouldPersist
                          delegate:aDelegate];
@@ -79,6 +80,7 @@ NSString * const NXOAuth2ClientConnectionContextTokenRefresh = @"tokenRefresh";
               tokenURL:(NSURL *)aTokenURL
            accessToken:(NXOAuth2AccessToken *)anAccessToken
              tokenType:(NSString *)aTokenType
+      responseCodeType:(NSString *)aResponseCodeType
          keyChainGroup:(NSString *)aKeyChainGroup
             persistent:(BOOL)shouldPersist
               delegate:(NSObject<NXOAuth2ClientDelegate> *)aDelegate;
@@ -94,6 +96,7 @@ NSString * const NXOAuth2ClientConnectionContextTokenRefresh = @"tokenRefresh";
         tokenURL = [aTokenURL copy];
         tokenType = [aTokenType copy];
         accessToken = anAccessToken;
+        responseCodeType = [aResponseCodeType copy];
         
         self.tokenRequestHTTPMethod = @"POST";
         self.acceptType = @"application/json";
@@ -113,7 +116,7 @@ NSString * const NXOAuth2ClientConnectionContextTokenRefresh = @"tokenRefresh";
 
 #pragma mark Accessors
 
-@synthesize clientId, clientSecret, tokenType;
+@synthesize clientId, clientSecret, tokenType, responseCodeType;
 @synthesize desiredScope, userAgent;
 @synthesize delegate, persistent, accessToken, authenticating;
 @synthesize additionalAuthenticationParameters;
@@ -228,10 +231,10 @@ NSString * const NXOAuth2ClientConnectionContextTokenRefresh = @"tokenRefresh";
     }
 }
 
-- (NSURL *)authorizationURLWithRedirectURL:(NSURL *)redirectURL;
+- (NSURL *)authorizationURLWithRedirectURL:(NSURL *)redirectURL
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       @"code", @"response_type",
+                                       responseCodeType, @"response_type",
                                        clientId, @"client_id",
                                        [redirectURL absoluteString], @"redirect_uri",
                                        nil];

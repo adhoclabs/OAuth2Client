@@ -47,6 +47,8 @@ NSString * const kNXOAuth2AccountStoreConfigurationKeyChainGroup = @"kNXOAuth2Ac
 NSString * const kNXOAuth2AccountStoreConfigurationAdditionalAuthenticationParameters = @"kNXOAuth2AccountStoreConfigurationAdditionalAuthenticationParameters";
 NSString * const kNXOAuth2AccountStoreConfigurationCustomHeaderFields = @"kNXOAuth2AccountStoreConfigurationCustomHeaderFields";
 
+NSString * const kNXOAuth2AccountStoreConfigurationResponseCodeType = @"kNXOAuth2AccountStoreConfigurationResponseCodeType";
+
 #pragma mark Account Type
 
 NSString * const kNXOAuth2AccountStoreAccountType = @"kNXOAuth2AccountStoreAccountType";
@@ -178,8 +180,7 @@ NSString * const kNXOAuth2AccountStoreAccountType = @"kNXOAuth2AccountStoreAccou
     [client requestAccess];
 }
 
-- (void)requestAccessToAccountWithType:(NSString *)accountType
-   withPreparedAuthorizationURLHandler:(NXOAuth2PreparedAuthorizationURLHandler)aPreparedAuthorizationURLHandler;
+- (void)requestAccessToAccountWithType:(NSString *)accountType withPreparedAuthorizationURLHandler:(NXOAuth2PreparedAuthorizationURLHandler)aPreparedAuthorizationURLHandler
 {
     NSAssert(aPreparedAuthorizationURLHandler, @"Prepared Authorization Handler must not be nil.");
 
@@ -239,6 +240,24 @@ NSString * const kNXOAuth2AccountStoreAccountType = @"kNXOAuth2AccountStoreAccou
                             aSecret, kNXOAuth2AccountStoreConfigurationSecret,
                             anAuthorizationURL, kNXOAuth2AccountStoreConfigurationAuthorizeURL,
                             aTokenURL, kNXOAuth2AccountStoreConfigurationTokenURL,
+                            aRedirectURL, kNXOAuth2AccountStoreConfigurationRedirectURL, nil]
+            forAccountType:anAccountType];
+}
+
+- (void)setClientID:(NSString *)aClientID
+             secret:(NSString *)aSecret
+   authorizationURL:(NSURL *)anAuthorizationURL
+           tokenURL:(NSURL *)aTokenURL
+        redirectURL:(NSURL *)aRedirectURL
+   responseCodeType:(NSString *)aResponseCodeType
+     forAccountType:(NSString *)anAccountType
+{
+    [self setConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:
+                            aClientID, kNXOAuth2AccountStoreConfigurationClientID,
+                            aSecret, kNXOAuth2AccountStoreConfigurationSecret,
+                            anAuthorizationURL, kNXOAuth2AccountStoreConfigurationAuthorizeURL,
+                            aTokenURL, kNXOAuth2AccountStoreConfigurationTokenURL,
+                            aResponseCodeType, kNXOAuth2AccountStoreConfigurationResponseCodeType,
                             aRedirectURL, kNXOAuth2AccountStoreConfigurationRedirectURL, nil]
             forAccountType:anAccountType];
 }
@@ -398,6 +417,7 @@ NSString * const kNXOAuth2AccountStoreAccountType = @"kNXOAuth2AccountStoreAccou
 
             NSString *clientID = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationClientID];
             NSString *clientSecret = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationSecret];
+            NSString *responseCodeType = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationResponseCodeType] ? [configuration objectForKey:kNXOAuth2AccountStoreConfigurationResponseCodeType] : @"code";
             NSSet *scope = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationScope];
             NSURL *authorizeURL = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationAuthorizeURL];
             NSURL *tokenURL = [configuration objectForKey:kNXOAuth2AccountStoreConfigurationTokenURL];
@@ -413,6 +433,7 @@ NSString * const kNXOAuth2AccountStoreAccountType = @"kNXOAuth2AccountStoreAccou
                                                      tokenURL:tokenURL
                                                   accessToken:nil
                                                     tokenType:tokenType
+                                             responseCodeType:responseCodeType
                                                 keyChainGroup:keychainGroup
                                                    persistent:YES
                                                      delegate:self];

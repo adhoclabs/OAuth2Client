@@ -43,6 +43,7 @@ extern NSString * const NXOAuth2ClientConnectionContextTokenRefresh;
     NSString    *userAgent;
     NSString    *assertion;
     NSString    *keyChainGroup;
+    NSString    *responseCodeType;
     
     // server information
     NSURL        *authorizeURL;
@@ -64,6 +65,7 @@ extern NSString * const NXOAuth2ClientConnectionContextTokenRefresh;
 @property (nonatomic, copy, readonly) NSString *clientId;
 @property (nonatomic, copy, readonly) NSString *clientSecret;
 @property (nonatomic, copy, readonly) NSString *tokenType;
+@property (nonatomic, copy, readonly) NSString *responseCodeType;
 @property (nonatomic, strong, readwrite) NSDictionary *additionalAuthenticationParameters;
 @property (nonatomic, strong, readwrite) NSDictionary *customHeaderFields;
 
@@ -106,9 +108,11 @@ extern NSString * const NXOAuth2ClientConnectionContextTokenRefresh;
               tokenURL:(NSURL *)tokenURL
            accessToken:(NXOAuth2AccessToken *)accessToken
              tokenType:(NSString *)tokenType
+      responseCodeType:(NSString *)aResponseCodeType
          keyChainGroup:(NSString *)keyChainGroup
             persistent:(BOOL)shouldPersist
               delegate:(NSObject<NXOAuth2ClientDelegate> *)delegate;
+
 
 - (BOOL)openRedirectURL:(NSURL *)URL;
 

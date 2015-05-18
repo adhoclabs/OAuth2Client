@@ -35,6 +35,7 @@ extern NSString * const kNXOAuth2AccountStoreConfigurationRedirectURL;
 extern NSString * const kNXOAuth2AccountStoreConfigurationScope;
 extern NSString * const kNXOAuth2AccountStoreConfigurationTokenType;
 extern NSString * const kNXOAuth2AccountStoreConfigurationTokenRequestHTTPMethod;
+extern NSString * const kNXOAuth2AccountStoreConfigurationResponseCodeType;
 
 /* 
  * Requires a NSDictionary as a value.
@@ -91,6 +92,14 @@ typedef void(^NXOAuth2PreparedAuthorizationURLHandler)(NSURL *preparedURL);
    authorizationURL:(NSURL *)anAuthorizationURL
            tokenURL:(NSURL *)aTokenURL
         redirectURL:(NSURL *)aRedirectURL
+     forAccountType:(NSString *)anAccountType;
+
+- (void)setClientID:(NSString *)aClientID
+             secret:(NSString *)aSecret
+   authorizationURL:(NSURL *)anAuthorizationURL
+           tokenURL:(NSURL *)aTokenURL
+        redirectURL:(NSURL *)aRedirectURL
+   responseCodeType:(NSString *)aResponseCodeType
      forAccountType:(NSString *)anAccountType;
 
 - (void)setClientID:(NSString *)aClientID
